@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Day2-mapping-specification:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Day2_mapping_specification_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Day2-mapping-specification/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Day2-mapping-specification" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

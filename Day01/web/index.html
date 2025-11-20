@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AAD</title>
+</head>
+<body>
+<h1>Welcome</h1>
+<p>This is simple project</p>
+<div id="content"></div>
+<button id="btn-get">Get</button>
+<button id="btn-post">Post</button>
+<button id="btn-put">Put</button>
+<button id="btn-delete">Delete</button>
+
+
+
+<script src="lib/jquery-3.7.1.min.js"></script>
+<script>
+    $('#btn-get').click(function (){
+        console.log("start");
+        $.ajax({
+            url:'http://localhost:8080/Day01_Web_exploded/hello',
+            method:'GET',
+            success:function (response){
+                console.log(response);
+            },
+            error:function (){
+                console.log("Error occurred");
+            }
+        })
+        console.log("end");
+    });
+
+    $('#btn-post').click(function (){
+        console.log("start");
+        $.ajax({
+            url:'http://localhost:8080/Day01_Web_exploded/hello',
+            method:'POST',
+            success:function (response){
+                console.log(response);
+            },
+            error:function (){
+                console.log("Error occurred");
+            }
+        })
+        console.log("end");
+    });
+
+    $('#btn-put').click(function (){
+        console.log("start");
+        $.ajax({
+            url:'http://localhost:8080/Day01_Web_exploded/hello',
+            method:'PUT',
+            success:function (response){
+                console.log(response);
+            },
+            error:function (){
+                console.log("Error occurred");
+            }
+        })
+        console.log("end");
+    });
+
+    $('#btn-delete').click(function (){
+        console.log("start");
+        $.ajax({
+            url:'http://localhost:8080/Day01_Web_exploded/hello',
+            method:'DELETE',
+            success:function (response){
+                console.log(response);
+            },
+            error:function (){
+                console.log("Error occurred");
+            }
+        })
+        console.log("end");
+    });
+</script>
+</body>
+</html>

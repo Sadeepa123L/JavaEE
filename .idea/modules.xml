@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Day01/Day01.iml" filepath="$PROJECT_DIR$/Day01/Day01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Day2-Application/Day2-Application.iml" filepath="$PROJECT_DIR$/Day2-Application/Day2-Application.iml" />
       <module fileurl="file://$PROJECT_DIR$/Day2-mapping-specification/Day2-mapping-specification.iml" filepath="$PROJECT_DIR$/Day2-mapping-specification/Day2-mapping-specification.iml" />
       <module fileurl="file://$PROJECT_DIR$/javaEE-Theory.iml" filepath="$PROJECT_DIR$/javaEE-Theory.iml" />
     </modules>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Customer Registration</h1>
+
+    <div>
+        <input type="text" id="cid" placeholder="Enter Customer ID">
+        <br>
+        <input type="text" id="cname" placeholder="Enter Customer Name">
+        <br>
+        <input type="text" id="caddress" placeholder="Enter Customer Address">
+        <br>
+        <button id="btn-save">Save</button>
+        <button id="btn-update">Put</button>
+
+    </div>
+    <button id="btn-get">Get</button>
+    <button id="btn-delete">Delete</button>
+
+    <script src="lib/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $('#btn-save').click(function () {
+
+            var cid = $('#cid').val();
+            var cname = $('#cname').val();
+            var caddress = $('#caddress').val();
+
+            $.ajax({
+                url: "http://localhost:8080/Day2_Application_Web_exploded/customer?id=" + cid + "&name" + cname + "&address=" + caddress,
+                method: 'POST',
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function () {
+                    console.log('Error occurred while fetching data.');
+                }
+            })
+        });
+
+        $('#btn-get').click(function () {
+
+            var cid = $('#cid').val();
+            var cname = $('#cname').val();
+            var caddress = $('#caddress').val();
+
+            $.ajax({
+                url: "http://localhost:8080/Day2_Application_Web_exploded/customer",
+                method: 'GET',
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function () {
+                    console.log('Error occurred while fetching data.');
+                }
+            })
+        });
+
+        $('#btn-delete').click(function () {
+
+            var cid = $('#cid').val();
+
+            $.ajax({
+                url: "http://localhost:8080/Day2_Application_Web_exploded/customer"+cid,
+                method: 'DELETE',
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function () {
+                    console.log('Error occurred while fetching data.');
+                }
+            })
+        });
+
+
+    </script>
+</body>
+</html>

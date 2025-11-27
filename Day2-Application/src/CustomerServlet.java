@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +21,24 @@ public class CustomerServlet extends HttpServlet {
         String name = req.getParameter("name");
         String address = req.getParameter("address");
 
-        Customer customer = new Customer(id, name, address);
-        customers.add(customer);
-
-        resp.getWriter().println("Customer added successfully");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javaeeapp","root",
+                     "Sadeepa@2003");
+             String sql = "INSERT INTO customer (id, name, address) VALUES (?, ?, ?)";
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ps.setInt(1, Integer.parseInt(id));
+             ps.setString(2, name);
+             ps.setString(3, address);
+             int rows = ps.executeUpdate();
+             if (rows > 0) {
+                 resp.getWriter().println("Customer successfully added");
+             }else {
+                 resp.getWriter().println("Customer not added");
+             }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // READ (Get All or Get by ID)
@@ -31,20 +46,34 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
-        if (id == null) {
-            // Get All
-            for (Customer c : customers) {
-                resp.getWriter().println(c.getId() + " - " + c.getName() + " - " + c.getAddress());
-            }
-        } else {
-            // Get by ID
-            for (Customer c : customers) {
-                if (c.getId().equals(id)) {
-                    resp.getWriter().println(c.getId() + " - " + c.getName() + " - " + c.getAddress());
-                    return;
-                }
-            }
-            resp.getWriter().println("Customer not found");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javaeeapp","root",
+                    "Sadeepa@2003");
+           if(id==null){
+               String sql = "SELECT * FROM customer";
+               PreparedStatement ps = connection.prepareStatement(sql);
+               ResultSet rs = ps.executeQuery();
+               while (rs.next()) {
+                  Integer cid = Integer.valueOf(rs.getString("id"));
+                  String name = rs.getString("name");
+                  String address = rs.getString("address");
+                  resp.getWriter().println(cid+" "+name+" "+address);
+               }
+           }else {
+               String sql = "SELECT * FROM customer WHERE id = ?";
+               PreparedStatement ps = connection.prepareStatement(sql);
+               ps.setInt(1, Integer.parseInt(id));
+               ResultSet rs = ps.executeQuery();
+               while (rs.next()) {
+                   Integer cid = Integer.valueOf(rs.getString("id"));
+                   String name = rs.getString("name");
+                   String address = rs.getString("address");
+                   resp.getWriter().println(cid+" "+name+" "+address);
+               }
+           }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -55,17 +84,24 @@ public class CustomerServlet extends HttpServlet {
         String name = req.getParameter("name");
         String address = req.getParameter("address");
 
-        for (Customer c : customers) {
-            if (c.getId().equals(id)) {
-                if (name != null) c.setName(name);
-                if (address != null) c.setAddress(address);
-
-                resp.getWriter().println("Customer updated successfully");
-                return;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javaeeapp","root",
+                    "Sadeepa@2003");
+            String sql = "UPDATE customer SET name = ?, address = ? WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, address);
+            ps.setInt(3, Integer.parseInt(id));
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                resp.getWriter().println("Customer successfully updated");
+            }else {
+                resp.getWriter().println("Customer not updated");
             }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        resp.getWriter().println("Customer not found for update");
     }
 
     // DELETE
@@ -73,14 +109,21 @@ public class CustomerServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
-        for (Customer c : customers) {
-            if (c.getId().equals(id)) {
-                customers.remove(c);
-                resp.getWriter().println("Customer deleted successfully");
-                return;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javaeeapp","root",
+                    "Sadeepa@2003");
+            String sql = "DELETE FROM customer WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, Integer.parseInt(id));
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                resp.getWriter().println("Customer successfully deleted");
+            }else {
+                resp.getWriter().println("Customer not deleted");
             }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        resp.getWriter().println("Customer not found for deletion");
     }
 }

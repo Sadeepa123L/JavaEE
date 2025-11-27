@@ -2,80 +2,102 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Customer CRUD Panel</title>
 </head>
 <body>
-    <h1>Customer Registration</h1>
 
-    <div>
-        <input type="text" id="cid" placeholder="Enter Customer ID">
-        <br>
-        <input type="text" id="cname" placeholder="Enter Customer Name">
-        <br>
-        <input type="text" id="caddress" placeholder="Enter Customer Address">
-        <br>
-        <button id="btn-save">Save</button>
-        <button id="btn-update">Put</button>
+<h1>Customer CRUD Operations</h1>
 
-    </div>
-    <button id="btn-get">Get</button>
-    <button id="btn-delete">Delete</button>
+<!-- CREATE / UPDATE FORM -->
+<div>
+    <input type="text" id="id" placeholder="Id" />
+    <input type="text" id="name" placeholder="Name" />
+    <input type="text" id="address" placeholder="Address" />
+</div>
 
-    <script src="lib/jquery-3.7.1.min.js"></script>
-    <script>
+<br>
 
-        $('#btn-save').click(function () {
+<button id="btnCreate">Create</button>
+<button id="btnGet">Get Customer</button>
+<button id="btnGetAll">Get All</button>
+<button id="btnUpdate">Update</button>
+<button id="btnDelete">Delete</button>
 
-            var cid = $('#cid').val();
-            var cname = $('#cname').val();
-            var caddress = $('#caddress').val();
+<hr>
 
-            $.ajax({
-                url: "http://localhost:8080/Day2_Application_Web_exploded/customer?id=" + cid + "&name" + cname + "&address=" + caddress,
-                method: 'POST',
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function () {
-                    console.log('Error occurred while fetching data.');
-                }
-            })
+<h2>Output</h2>
+<pre id="output"></pre>
+
+<script src="lib/jquery-3.7.1.min.js"></script>
+<script>
+
+    const baseUrl = "http://localhost:8080/Day2_Application_Web_exploded/customer";
+
+    // CREATE
+    $("#btnCreate").click(function () {
+        $.ajax({
+            url: baseUrl,
+            method: "POST",
+            data: {
+                id: $("#id").val(),
+                name: $("#name").val(),
+                address: $("#address").val()
+            },
+            success: function (res) {
+                $("#output").text(res);
+            }
         });
+    });
 
-        $('#btn-get').click(function () {
-
-            var cid = $('#cid').val();
-            var cname = $('#cname').val();
-            var caddress = $('#caddress').val();
-
-            $.ajax({
-                url: "http://localhost:8080/Day2_Application_Web_exploded/customer",
-                method: 'GET',
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function () {
-                    console.log('Error occurred while fetching data.');
-                }
-            })
+    // GET ONE
+    $("#btnGet").click(function () {
+        $.ajax({
+            url: baseUrl + "?id=" + $("#id").val(),
+            method: "GET",
+            success: function (res) {
+                $("#output").text(res);
+            }
         });
+    });
 
-
-        $('#btn-delete').click(function () {
-
-            var cid = $('#cid').val();
-
-            $.ajax({
-                url: "http://localhost:8080/Day2_Application_Web_exploded/customer"+cid,
-                method: 'DELETE',
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function () {
-                    console.log('Error occurred while fetching data.');
-                }
-            })
+    // GET ALL
+    $("#btnGetAll").click(function () {
+        $.ajax({
+            url: baseUrl,
+            method: "GET",
+            success: function (res) {
+                $("#output").text(res);
+            }
         });
-    </script>
+    });
+
+    // UPDATE
+    $("#btnUpdate").click(function () {
+        let id = $("#id").val();
+        let name = $("#name").val();
+        let address = $("#address").val();
+
+        $.ajax({
+            url: baseUrl + "?id=" + id + "&name=" + name + "&address=" + address,
+            method: "PUT",
+            success: function (res) {
+                $("#output").text(res);
+            }
+        });
+    });
+
+    // DELETE
+    $("#btnDelete").click(function () {
+        $.ajax({
+            url: baseUrl + "?id=" + $("#id").val(),
+            method: "DELETE",
+            success: function (res) {
+                $("#output").text(res);
+            }
+        });
+    });
+
+</script>
+
 </body>
 </html>

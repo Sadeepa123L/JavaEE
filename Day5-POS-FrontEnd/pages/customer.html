@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Customer</h1>
+
+<button onclick="window.location.href='pages/customer.html'">Customer</button>
+<button onclick="window.location.href='pages/item.html'">Item</button>
+<button onclick="window.location.href='pages/order.html'">Order</button>
+<button onclick="window.location.href='../index.html'">Home</button>
+
+<div>
+    <input type="text" id="customer-id" placeholder="customer id">
+    <input type="text" id="customer-name" placeholder="customer name">
+    <input type="text" id="customer-address" placeholder="customer address">
+    <button onclick="saveCustomer()">Save</button>
+    <button onclick="updateCustomer()">Update</button>
+    <button onclick="deleteCustomer()">Delete</button>
+    <button onclick="getAllCustomers()">Get All Customers</button>
+</div>
+<div id="customers">
+    <table id="customer-table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Customer Name</th>
+            <th>Customer Address</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+
+        </tbody>
+    </table>
+</div>
+
+<script src="../assests/js/jquery-3.7.1.min.js"></script>
+
+<script>
+    function saveCustomer(){
+       const cid = $('#customer-id').val();
+         const cname = $('#customer-name').val();
+            const caddress = $('#customer-address').val();
+        $.ajax({
+            url:"http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/customers",
+            method:"POST",
+            contentType:"application/json",
+            data:JSON.stringify({
+                "cid":cid,
+                "cname":cname,
+                "caddress":caddress
+            }),
+            success:function (response){
+                console.log(response)
+            },
+            error:function (error){
+                console.log(error)
+            }
+        })
+    }
+    function updateCustomer(){
+        const cid = $('#customer-id').val();
+        const cname = $('#customer-name').val();
+        const caddress = $('#customer-address').val();
+
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/customers",
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "cid": cid,
+                "cname": cname,
+                "caddress": caddress
+            }),
+            success: function (response){
+                console.log(response);
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+    }
+    function deleteCustomer(){
+        const cid=$('#customer-id').val()
+        $.ajax({
+            url:"http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/customers?cid=" + cid,
+            method:'DELETE',
+            success:function (response) {
+                console.log(response)
+                getAllCustomers();
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        })
+    }
+
+    function getAllCustomers() {
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/customers",
+            method: 'GET',
+            success: function (response) {
+                $("#tableBody").empty()
+                for (let customer of response) {
+                    const tablerow = "<tr> <td>" + customer.cid + "</td> <td>" + customer.cname + "</td><td>" + customer.caddress + "</td></tr>"
+                    $("#tableBody").append(tablerow)
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+    window.onload(
+        getAllCustomers()
+    )
+</script>
+</body>
+</html>

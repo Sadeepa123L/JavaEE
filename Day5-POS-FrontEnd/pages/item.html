@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Item</h1>
+
+<button onclick="window.location.href='pages/customer.html'">Customer</button>
+<button onclick="window.location.href='pages/item.html'">Item</button>
+<button onclick="window.location.href='pages/order.html'">Order</button>
+<button onclick="window.location.href='../index.html'">Home</button>
+
+<div>
+    <input type="text" id="item-id" placeholder="item id">
+    <input type="text" id="item-name" placeholder="item name">
+    <input type="text" id="item-price" placeholder="item price">
+    <button onclick="saveItem()">Save</button>
+    <button onclick="updateItem()">Update</button>
+    <button onclick="deleteItem()">Delete</button>
+    <button onclick="getAllItem()">Get All Items</button>
+</div>
+<div id="items">
+    <table id="item-table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Item Name</th>
+            <th>Item Price</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+
+        </tbody>
+    </table>
+</div>
+
+<script src="../assests/js/jquery-3.7.1.min.js"></script>
+
+<script>
+    function saveItem(){
+        const itemid = $('#item-id').val();
+        const itemname = $('#item-name').val();
+        const itemprice = $('#item-price').val();
+        $.ajax({
+            url:"http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/items",
+            method:"POST",
+            contentType:"application/json",
+            data:JSON.stringify({
+                "itemid":itemid,
+                "itemname":itemname,
+                "itemprice":itemprice
+            }),
+            success:function (response){
+                console.log(response)
+            },
+            error:function (error){
+                console.log(error)
+            }
+        })
+    }
+
+    function updateItem(){}
+    function deleteItem(){}
+    function getAllItem(){}
+</script>
+
+</body>
+</html>

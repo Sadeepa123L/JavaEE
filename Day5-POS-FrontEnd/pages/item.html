@@ -30,7 +30,7 @@
             <th>Item Price</th>
         </tr>
         </thead>
-        <tbody id="tableBody">
+        <tbody id="TableBody">
 
         </tbody>
     </table>
@@ -61,9 +61,61 @@
         })
     }
 
-    function updateItem(){}
-    function deleteItem(){}
-    function getAllItem(){}
+    function updateItem(){
+        const itemid = $('#item-id').val();
+        const itemname = $('#item-name').val();
+        const itemprice = $('#item-price').val();
+
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/items",
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "itemid": itemid,
+                "itemname": itemname,
+                "itemprice": itemprice
+            }),
+            success: function (response){
+                console.log(response);
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+    }
+    function deleteItem(){
+        const itemid=$('#item-id').val()
+        $.ajax({
+            url:"http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/items?itemid=" + itemid,
+            method:'DELETE',
+            success:function (response) {
+                console.log(response)
+                getAllItem();
+            },
+            error:function (error) {
+                console.log(error)
+            }
+        })
+    }
+    function getAllItem(){
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/items",
+            method: 'GET',
+            success: function (response) {
+                $("#tableBody").empty()
+                for (let item of response) {
+                    const Tablerow = "<tr> <td>" + item.itemid + "</td> <td>" + item.itemname + "</td><td>" + item.itemprice + "</td></tr>"
+                    $("#tableBody").append(Tablerow)
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+    window.onload(
+        getAllItem()
+    )
 </script>
 
 </body>

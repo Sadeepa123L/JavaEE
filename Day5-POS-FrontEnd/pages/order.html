@@ -2,15 +2,140 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Order</title>
 </head>
 <body>
+
 <h1>Order</h1>
 
 <button onclick="window.location.href='pages/customer.html'">Customer</button>
 <button onclick="window.location.href='pages/item.html'">Item</button>
 <button onclick="window.location.href='pages/order.html'">Order</button>
 <button onclick="window.location.href='../index.html'">Home</button>
+
+<div>
+    <input type="text" id="order-id" placeholder="order id">
+    <input type="text" id="customer-id" placeholder="customer id">
+    <input type="text" id="item-id" placeholder="item id">
+    <input type="number" id="qty" placeholder="quantity">
+
+    <button onclick="saveOrder()">Save</button>
+    <button onclick="updateOrder()">Update</button>
+    <button onclick="deleteOrder()">Delete</button>
+    <button onclick="getAllOrders()">Get All Orders</button>
+</div>
+
+<div id="orders">
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>Customer Id</th>
+            <th>Item Id</th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody id="orderTableBody">
+        </tbody>
+    </table>
+</div>
+
+<script src="../assests/js/jquery-3.7.1.min.js"></script>
+
+<script>
+    function saveOrder(){
+        const orderId = $('#order-id').val();
+        const customerId = $('#customer-id').val();
+        const itemId = $('#item-id').val();
+        const qty = $('#qty').val();
+
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/orders",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "orderId": orderId,
+                "customerId": customerId,
+                "itemId": itemId,
+                "qty": qty
+            }),
+            success: function (response){
+                console.log(response);
+                getAllOrders();
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+    }
+
+    function updateOrder(){
+        const orderId = $('#order-id').val();
+        const customerId = $('#customer-id').val();
+        const itemId = $('#item-id').val();
+        const qty = $('#qty').val();
+
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/orders",
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "orderId": orderId,
+                "customerId": customerId,
+                "itemId": itemId,
+                "qty": qty
+            }),
+            success: function (response){
+                console.log(response);
+                getAllOrders();
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+    }
+
+    function deleteOrder(){
+        const orderId = $('#order-id').val();
+
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/orders?orderId=" + orderId,
+            method: "DELETE",
+            success: function (response){
+                console.log(response);
+                getAllOrders();
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+    }
+
+    function getAllOrders(){
+        $.ajax({
+            url: "http://localhost:8080/Day5_POS_Backend_Web_exploded/api/v1/orders",
+            method: "GET",
+            success: function (response){
+                $('#orderTableBody').empty();
+                for (let order of response){
+                    const row =
+                        "<tr>" +
+                        "<td>" + order.orderId + "</td>" +
+                        "<td>" + order.customerId + "</td>" +
+                        "<td>" + order.itemId + "</td>" +
+                        "<td>" + order.qty + "</td>" +
+                        "</tr>";
+                    $('#orderTableBody').append(row);
+                }
+            },
+            error: function (error){
+                console.log(error);
+            }
+        });
+    }
+
+    window.onload = getAllOrders;
+</script>
 
 </body>
 </html>
